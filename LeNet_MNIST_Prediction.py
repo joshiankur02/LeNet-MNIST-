@@ -1,5 +1,6 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 
@@ -45,7 +46,14 @@ print(val_loss,val_acc)
 model.save('lenet_mnist_tensorflow.model')
 new_model = tf.keras.models.load_model('lenet_mnist_tensorflow.model')
 
-pred = new_model.predict(x_test)
+from sklearn.metrics import f1_score, precision_score, recall_score, confusion_matrix
+y_pred1 = new_model.predict(x_test)
+y_pred = np.argmax(y_pred1, axis=1)
+
+# Print f1, precision, and recall scores
+print("Precision score is :",precision_score(y_test, y_pred , average="macro"))
+print("Recall score is :",recall_score(y_test, y_pred , average="macro"))
+print("F1_score is :",f1_score(y_test, y_pred , average="macro"))
 
 x_train = x_train.reshape(x_train.shape[0],28,28)
 x_test = x_test.reshape(x_test.shape[0],28,28)
